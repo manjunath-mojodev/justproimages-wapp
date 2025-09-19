@@ -257,7 +257,7 @@ export function QRCustomization() {
               robust against damage but increases its size.
               <br />
               <strong>Lower error correction</strong> creates smaller QR codes
-              but they're more fragile.
+              but they&apos;re more fragile.
             </p>
           </div>
         </div>

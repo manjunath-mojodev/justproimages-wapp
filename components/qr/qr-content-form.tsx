@@ -76,7 +76,7 @@ type CalendarFormData = z.infer<typeof calendarSchema>;
 
 export function QRContentForm() {
   const { config, updateConfig } = useQRCodeStore();
-  const [formData, setFormData] = useState<any>({});
+  const [formData, setFormData] = useState<Record<string, unknown>>({});
 
   // Initialize all form hooks at the top level
   const wifiForm = useForm<WiFiFormData>({
@@ -127,7 +127,7 @@ export function QRContentForm() {
     calendarForm.reset(formData);
   }, [formData, wifiForm, vcardForm, smsForm, emailForm, calendarForm]);
 
-  const updateContent = (newData: any) => {
+  const updateContent = (newData: Record<string, unknown> | string) => {
     if (["wifi", "vcard", "sms", "email", "calendar"].includes(config.type)) {
       updateConfig({ content: JSON.stringify(newData) });
     } else {
