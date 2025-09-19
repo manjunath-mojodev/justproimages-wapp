@@ -1,25 +1,17 @@
-import html2canvas from "html2canvas";
 import { saveAs } from "file-saver";
 import jsPDF from "jspdf";
 import { QRCodeConfig } from "@/types/qr";
 
 export class QRCodeExporter {
   static async exportAsPNG(
-    element: HTMLElement,
+    dataUrl: string,
     filename: string = "qr-code.png"
   ): Promise<void> {
     try {
-      const canvas = await html2canvas(element, {
-        backgroundColor: null,
-        scale: 2, // Higher quality
-        useCORS: true,
-      });
-
-      canvas.toBlob((blob) => {
-        if (blob) {
-          saveAs(blob, filename);
-        }
-      });
+      // Convert data URL to blob and download
+      const response = await fetch(dataUrl);
+      const blob = await response.blob();
+      saveAs(blob, filename);
     } catch (error) {
       throw new Error(`Failed to export PNG: ${error}`);
     }
@@ -41,37 +33,38 @@ export class QRCodeExporter {
   }
 
   static async exportAsPDF(
-    element: HTMLElement,
+    dataUrl: string,
     filename: string = "qr-code.pdf"
   ): Promise<void> {
     try {
-      const canvas = await html2canvas(element, {
-        backgroundColor: null,
-        scale: 2,
-        useCORS: true,
-      });
-
-      const imgData = canvas.toDataURL("image/png");
       const pdf = new jsPDF({
         orientation: "portrait",
         unit: "mm",
         format: "a4",
       });
 
+      // Get image dimensions from data URL
+      const img = new Image();
+      img.src = dataUrl;
+
+      await new Promise((resolve) => {
+        img.onload = resolve;
+      });
+
       const imgWidth = 100; // mm
       const pageHeight = pdf.internal.pageSize.height;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      const imgHeight = (img.height * imgWidth) / img.width;
       let heightLeft = imgHeight;
 
       let position = 10;
 
-      pdf.addImage(imgData, "PNG", 10, position, imgWidth, imgHeight);
+      pdf.addImage(dataUrl, "PNG", 10, position, imgWidth, imgHeight);
       heightLeft -= pageHeight;
 
       while (heightLeft >= 0) {
         position = heightLeft - imgHeight + 10;
         pdf.addPage();
-        pdf.addImage(imgData, "PNG", 10, position, imgWidth, imgHeight);
+        pdf.addImage(dataUrl, "PNG", 10, position, imgWidth, imgHeight);
         heightLeft -= pageHeight;
       }
 

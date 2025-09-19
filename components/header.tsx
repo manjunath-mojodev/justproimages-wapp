@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import React from "react";
 import { ThemeToggleButton } from "./theme-toggle-button";
 
-const menuItems = [{ name: "QR Code", href: "/qr-codes" }];
+const menuItems = [{ name: "QR Code", href: "/free-tools/qr-code-generator" }];
 
 export const HeroHeader = () => {
   const [menuState, setMenuState] = React.useState(false);

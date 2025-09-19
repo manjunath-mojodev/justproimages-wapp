@@ -46,11 +46,11 @@ export function QRPreview() {
   };
 
   const handleExportPNG = async () => {
-    if (!qrRef.current) return;
+    if (!qrCodeDataUrl) return;
 
     try {
       await QRCodeExporter.exportAsPNG(
-        qrRef.current,
+        qrCodeDataUrl,
         `qr-code-${Date.now()}.png`
       );
       toast.success("QR code exported as PNG");
@@ -69,11 +69,11 @@ export function QRPreview() {
   };
 
   const handleExportPDF = async () => {
-    if (!qrRef.current) return;
+    if (!qrCodeDataUrl) return;
 
     try {
       await QRCodeExporter.exportAsPDF(
-        qrRef.current,
+        qrCodeDataUrl,
         `qr-code-${Date.now()}.pdf`
       );
       toast.success("QR code exported as PDF");

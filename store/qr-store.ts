@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { QRCodeConfig } from "@/types/qr";
+import { useEffect } from "react";
 
 interface QRCodeStore {
   // Current QR code configuration
@@ -60,6 +61,14 @@ export const useQRCodeStore = create<QRCodeStore>()(
       partialize: (state) => ({
         config: state.config,
       }),
+      skipHydration: true,
     }
   )
 );
+
+// Hook to handle hydration
+export const useHydrateStore = () => {
+  useEffect(() => {
+    useQRCodeStore.persist.rehydrate();
+  }, []);
+};
