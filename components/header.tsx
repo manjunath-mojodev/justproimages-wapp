@@ -6,12 +6,7 @@ import { Button } from "@/components/ui/button";
 import React from "react";
 import { ThemeToggleButton } from "./theme-toggle-button";
 
-const menuItems = [
-  { name: "Features", href: "#link" },
-  { name: "Solution", href: "#link" },
-  { name: "Pricing", href: "#link" },
-  { name: "About", href: "#link" },
-];
+const menuItems = [{ name: "QR Code", href: "/qr-codes" }];
 
 export const HeroHeader = () => {
   const [menuState, setMenuState] = React.useState(false);
@@ -31,7 +26,7 @@ export const HeroHeader = () => {
               >
                 {/* <Logo /> */}
                 <span>
-                  <h1>JustProImages</h1>
+                  <h1 className="text-2xl font-bold">JustProImages</h1>
                 </span>
               </Link>
 
@@ -76,7 +71,7 @@ export const HeroHeader = () => {
                 </ul>
               </div>
               <div className="flex w-full flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit">
-                <Button asChild variant="outline" size="sm">
+                {/* <Button asChild variant="outline" size="sm">
                   <Link href="#">
                     <span>Login</span>
                   </Link>
@@ -85,7 +80,7 @@ export const HeroHeader = () => {
                   <Link href="#">
                     <span>Sign Up</span>
                   </Link>
-                </Button>
+                </Button> */}
                 <ThemeToggleButton />
               </div>
             </div>

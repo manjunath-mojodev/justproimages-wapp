@@ -9,7 +9,7 @@ import { ProgressiveBlur } from '@/components/ui/progressive-blur'
 export default function HeroSection() {
     return (
         <>
-            <HeroHeader />
+            {/* <HeroHeader /> */}
             <main className="overflow-x-hidden">
                 <section>
                     <div className="pb-24 pt-12 md:pb-32 lg:pb-56 lg:pt-44">
