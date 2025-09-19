@@ -10,12 +10,11 @@ export default function Home() {
   return (
     <>
       <HeroSection></HeroSection>
-      <Features></Features>
+      {/* <Features></Features>
       <IntegrationsSection></IntegrationsSection>
       <ContentSection></ContentSection>
       <StatsSection></StatsSection>
-      <CallToAction></CallToAction>
-      <FooterSection></FooterSection>
+      <CallToAction></CallToAction> */}
     </>
   );
 }
