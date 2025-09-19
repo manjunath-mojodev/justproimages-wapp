@@ -131,7 +131,10 @@ export function QRContentForm() {
     if (["wifi", "vcard", "sms", "email", "calendar"].includes(config.type)) {
       updateConfig({ content: JSON.stringify(newData) });
     } else {
-      updateConfig({ content: newData });
+      updateConfig({
+        content:
+          typeof newData === "string" ? newData : JSON.stringify(newData),
+      });
     }
   };
 
