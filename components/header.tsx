@@ -4,7 +4,10 @@ import { Menu, X } from "lucide-react";
 import React from "react";
 import { ThemeToggleButton } from "./theme-toggle-button";
 
-const menuItems = [{ name: "QR Code", href: "/free-tools/qr-code-generator" }];
+const menuItems = [
+  { name: "QR Code", href: "/free-tools/qr-code-generator" },
+  { name: "Bulk Create", href: "/free-tools/bulk-create" },
+];
 
 export const HeroHeader = () => {
   const [menuState, setMenuState] = React.useState(false);
