@@ -60,7 +60,7 @@ export function SignupForm({
         values.name
       );
       if (success) {
-        toast.success(message);
+        toast.success("Please check your email for verification");
         router.push("/login");
       } else {
         toast.error(message);
