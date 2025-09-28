@@ -36,6 +36,11 @@ const iconMap = {
 
 export const HeroHeader = () => {
   const [menuState, setMenuState] = React.useState(false);
+  const [isMounted, setIsMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setIsMounted(true);
+  }, []);
   return (
     <header>
       <nav
@@ -68,72 +73,79 @@ export const HeroHeader = () => {
               <div className="hidden lg:block">
                 <ul className="flex gap-8 text-sm">
                   <li>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger className="text-muted-foreground hover:text-accent-foreground flex items-center gap-1 duration-150">
+                    {isMounted ? (
+                      <DropdownMenu>
+                        <DropdownMenuTrigger className="text-muted-foreground hover:text-accent-foreground flex items-center gap-1 duration-150">
+                          <span>Free Tools</span>
+                          <ChevronDown className="h-4 w-4" />
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="start" className="w-64">
+                          {getActiveTools().map((tool) => {
+                            const IconComponent = tool.icon
+                              ? iconMap[tool.icon as keyof typeof iconMap]
+                              : null;
+                            return (
+                              <DropdownMenuItem key={tool.id} asChild>
+                                <Link
+                                  href={tool.href}
+                                  className="flex items-center gap-2"
+                                >
+                                  {IconComponent && (
+                                    <IconComponent className="h-4 w-4" />
+                                  )}
+                                  <div className="flex flex-col">
+                                    <span className="font-medium">
+                                      {tool.name}
+                                    </span>
+                                    {tool.description && (
+                                      <span className="text-xs text-muted-foreground">
+                                        {tool.description}
+                                      </span>
+                                    )}
+                                  </div>
+                                </Link>
+                              </DropdownMenuItem>
+                            );
+                          })}
+                          {getComingSoonTools().length > 0 && (
+                            <>
+                              <DropdownMenuSeparator />
+                              {getComingSoonTools().map((tool) => {
+                                const IconComponent = tool.icon
+                                  ? iconMap[tool.icon as keyof typeof iconMap]
+                                  : null;
+                                return (
+                                  <DropdownMenuItem
+                                    key={tool.id}
+                                    disabled
+                                    className="opacity-50"
+                                  >
+                                    <div className="flex items-center gap-2">
+                                      {IconComponent && (
+                                        <IconComponent className="h-4 w-4" />
+                                      )}
+                                      <div className="flex flex-col">
+                                        <span className="font-medium">
+                                          {tool.name}
+                                        </span>
+                                        <span className="text-xs text-muted-foreground">
+                                          Coming Soon
+                                        </span>
+                                      </div>
+                                    </div>
+                                  </DropdownMenuItem>
+                                );
+                              })}
+                            </>
+                          )}
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    ) : (
+                      <span className="text-muted-foreground hover:text-accent-foreground flex items-center gap-1 duration-150">
                         <span>Free Tools</span>
                         <ChevronDown className="h-4 w-4" />
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="start" className="w-64">
-                        {getActiveTools().map((tool) => {
-                          const IconComponent = tool.icon
-                            ? iconMap[tool.icon as keyof typeof iconMap]
-                            : null;
-                          return (
-                            <DropdownMenuItem key={tool.id} asChild>
-                              <Link
-                                href={tool.href}
-                                className="flex items-center gap-2"
-                              >
-                                {IconComponent && (
-                                  <IconComponent className="h-4 w-4" />
-                                )}
-                                <div className="flex flex-col">
-                                  <span className="font-medium">
-                                    {tool.name}
-                                  </span>
-                                  {tool.description && (
-                                    <span className="text-xs text-muted-foreground">
-                                      {tool.description}
-                                    </span>
-                                  )}
-                                </div>
-                              </Link>
-                            </DropdownMenuItem>
-                          );
-                        })}
-                        {getComingSoonTools().length > 0 && (
-                          <>
-                            <DropdownMenuSeparator />
-                            {getComingSoonTools().map((tool) => {
-                              const IconComponent = tool.icon
-                                ? iconMap[tool.icon as keyof typeof iconMap]
-                                : null;
-                              return (
-                                <DropdownMenuItem
-                                  key={tool.id}
-                                  disabled
-                                  className="opacity-50"
-                                >
-                                  <div className="flex items-center gap-2">
-                                    {IconComponent && (
-                                      <IconComponent className="h-4 w-4" />
-                                    )}
-                                    <div className="flex flex-col">
-                                      <span className="font-medium">
-                                        {tool.name}
-                                      </span>
-                                      <span className="text-xs text-muted-foreground">
-                                        Coming Soon
-                                      </span>
-                                    </div>
-                                  </div>
-                                </DropdownMenuItem>
-                              );
-                            })}
-                          </>
-                        )}
-                      </DropdownMenuContent>
-                    </DropdownMenu>
+                      </span>
+                    )}
                   </li>
                 </ul>
               </div>

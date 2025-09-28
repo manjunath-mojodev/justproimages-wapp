@@ -1,6 +1,5 @@
 "use client";
 
-import { useHydrateStore } from "@/store/qr-store";
 import React from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -20,8 +19,6 @@ const iconMap = {
 };
 
 export default function FreeToolsPage() {
-  useHydrateStore();
-
   return (
     <div className="min-h-screen bg-background">
       <main className="container mx-auto px-4 py-8 pt-24">
