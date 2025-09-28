@@ -4,7 +4,20 @@ import { useHydrateStore } from "@/store/qr-store";
 import React from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, QrCode, Layers, Image, Palette, Type } from "lucide-react";
+import {
+  freeTools,
+  getActiveTools,
+  getComingSoonTools,
+} from "@/config/free-tools";
+
+const iconMap = {
+  QrCode,
+  Layers,
+  Image,
+  Palette,
+  Type,
+};
 
 export default function FreeToolsPage() {
   useHydrateStore();
@@ -20,40 +33,55 @@ export default function FreeToolsPage() {
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div className="border rounded-lg p-6 hover:shadow-lg transition-shadow">
-              <h3 className="text-xl font-semibold mb-3">QR Code Generator</h3>
-              <p className="text-muted-foreground mb-4">
-                Create custom QR codes for URLs, text, WiFi, vCards, and more
-                with advanced customization options.
-              </p>
-              <Button asChild className="w-full">
-                <Link href="/free-tools/qr-code-generator">
-                  Use Tool
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
-            </div>
+            {getActiveTools().map((tool) => {
+              const IconComponent = tool.icon
+                ? iconMap[tool.icon as keyof typeof iconMap]
+                : null;
+              return (
+                <div
+                  key={tool.id}
+                  className="border rounded-lg p-6 hover:shadow-lg transition-shadow"
+                >
+                  <div className="flex items-center gap-3 mb-3">
+                    {IconComponent && (
+                      <IconComponent className="h-6 w-6 text-primary" />
+                    )}
+                    <h3 className="text-xl font-semibold">{tool.name}</h3>
+                  </div>
+                  <p className="text-muted-foreground mb-4">
+                    {tool.description}
+                  </p>
+                  <Button asChild className="w-full">
+                    <Link href={tool.href}>
+                      Use Tool
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
+                  </Button>
+                </div>
+              );
+            })}
 
-            {/* Placeholder for future tools */}
-            <div className="border rounded-lg p-6 opacity-50">
-              <h3 className="text-xl font-semibold mb-3">Coming Soon</h3>
-              <p className="text-muted-foreground mb-4">
-                More amazing tools are on the way. Stay tuned!
-              </p>
-              <Button disabled className="w-full">
-                Coming Soon
-              </Button>
-            </div>
-
-            <div className="border rounded-lg p-6 opacity-50">
-              <h3 className="text-xl font-semibold mb-3">Coming Soon</h3>
-              <p className="text-muted-foreground mb-4">
-                More amazing tools are on the way. Stay tuned!
-              </p>
-              <Button disabled className="w-full">
-                Coming Soon
-              </Button>
-            </div>
+            {getComingSoonTools().map((tool) => {
+              const IconComponent = tool.icon
+                ? iconMap[tool.icon as keyof typeof iconMap]
+                : null;
+              return (
+                <div key={tool.id} className="border rounded-lg p-6 opacity-50">
+                  <div className="flex items-center gap-3 mb-3">
+                    {IconComponent && (
+                      <IconComponent className="h-6 w-6 text-muted-foreground" />
+                    )}
+                    <h3 className="text-xl font-semibold">{tool.name}</h3>
+                  </div>
+                  <p className="text-muted-foreground mb-4">
+                    {tool.description}
+                  </p>
+                  <Button disabled className="w-full">
+                    Coming Soon
+                  </Button>
+                </div>
+              );
+            })}
           </div>
         </div>
       </main>
