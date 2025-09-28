@@ -2,8 +2,8 @@ import Link from "next/link";
 
 const links = [
   {
-    title: "Try QR Code",
-    href: "/free-tools/qr-code-generator",
+    title: "Try Free Tools",
+    href: "/free-tools",
   },
 ];
 

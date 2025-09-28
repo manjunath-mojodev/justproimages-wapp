@@ -168,6 +168,7 @@ export const HeroHeader = () => {
                             <Link
                               href={tool.href}
                               className="text-muted-foreground hover:text-accent-foreground flex items-center gap-3 duration-150"
+                              onClick={() => setMenuState(false)}
                             >
                               {IconComponent && (
                                 <IconComponent className="h-5 w-5" />
@@ -210,12 +211,12 @@ export const HeroHeader = () => {
               </div>
               <div className="flex w-full flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit">
                 <Button asChild variant="outline" size="sm">
-                  <Link href="/login">
+                  <Link href="/login" onClick={() => setMenuState(false)}>
                     <span>Login</span>
                   </Link>
                 </Button>
                 <Button asChild size="sm">
-                  <Link href="/signup">
+                  <Link href="/signup" onClick={() => setMenuState(false)}>
                     <span>Sign Up</span>
                   </Link>
                 </Button>

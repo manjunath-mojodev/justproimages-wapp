@@ -17,6 +17,7 @@ import {
   IconSearch,
   IconSettings,
   IconUsers,
+  IconStack,
 } from "@tabler/icons-react";
 
 import { NavDocuments } from "@/components/nav-documents";
@@ -42,13 +43,18 @@ const data = {
   navMain: [
     {
       title: "Dashboard",
-      url: "/",
+      url: "/app",
       icon: IconDashboard,
     },
     {
-      title: "Lifecycle",
+      title: "QR Code Generator",
       url: "/free-tools/qr-code-generator",
       icon: IconListDetails,
+    },
+    {
+      title: "Bulk Create",
+      url: "/app/bulk-create",
+      icon: IconStack,
     },
     {
       title: "Analytics",
@@ -78,74 +84,81 @@ const data = {
           url: "#",
         },
         {
-          title: "Archived",
+          title: "Drafts",
+          url: "#",
+        },
+        {
+          title: "Templates",
           url: "#",
         },
       ],
     },
     {
-      title: "Proposal",
+      title: "Content",
       icon: IconFileDescription,
       url: "#",
       items: [
         {
-          title: "Active Proposals",
+          title: "Library",
           url: "#",
         },
         {
-          title: "Archived",
+          title: "Media",
+          url: "#",
+        },
+        {
+          title: "Documents",
           url: "#",
         },
       ],
     },
     {
-      title: "Prompts",
+      title: "AI Assistant",
       icon: IconFileAi,
       url: "#",
       items: [
         {
-          title: "Active Proposals",
+          title: "Chat",
           url: "#",
         },
         {
-          title: "Archived",
+          title: "Generate",
+          url: "#",
+        },
+        {
+          title: "Analyze",
           url: "#",
         },
       ],
     },
   ],
-  navSecondary: [
+  documents: [
     {
-      title: "Settings",
+      name: "Project Alpha",
       url: "#",
-      icon: IconSettings,
+      icon: IconFileWord,
     },
     {
-      title: "Get Help",
+      name: "Project Beta",
+      url: "#",
+      icon: IconFileDescription,
+    },
+    {
+      name: "Project Gamma",
+      url: "#",
+      icon: IconFileWord,
+    },
+  ],
+  navSecondary: [
+    {
+      title: "Help & Support",
       url: "#",
       icon: IconHelp,
     },
     {
-      title: "Search",
+      title: "Settings",
       url: "#",
-      icon: IconSearch,
-    },
-  ],
-  documents: [
-    {
-      name: "Data Library",
-      url: "#",
-      icon: IconDatabase,
-    },
-    {
-      name: "Reports",
-      url: "#",
-      icon: IconReport,
-    },
-    {
-      name: "Word Assistant",
-      url: "#",
-      icon: IconFileWord,
+      icon: IconSettings,
     },
   ],
 };

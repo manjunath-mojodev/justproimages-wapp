@@ -17,14 +17,6 @@ export const freeTools: FreeTool[] = [
     icon: "QrCode",
   },
   {
-    id: "bulk-create",
-    name: "Bulk Create",
-    href: "/free-tools/bulk-create",
-    description: "Create multiple QR codes at once",
-    icon: "Layers",
-    comingSoon: false,
-  },
-  {
     id: "image-resizer",
     name: "Image Resizer",
     href: "/free-tools/image-resizer",
