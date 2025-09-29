@@ -54,6 +54,12 @@ export function SignupForm({
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       setIsLoading(true);
+
+      if (values.password !== values.confirmPassword) {
+        toast.error("Passwords do not match");
+        return;
+      }
+
       const { success, message } = await signUpUser(
         values.email,
         values.password,

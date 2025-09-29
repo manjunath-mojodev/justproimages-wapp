@@ -6,13 +6,34 @@ import { schema } from "@/db/schema";
 import { nextCookies } from "better-auth/next-js";
 import { Resend } from "resend";
 import VerificationEmail from "@/components/emails/verification-email";
-import { toast } from "sonner";
+import PasswordResetEmail from "@/components/emails/password-reset";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
+    sendResetPassword: async ({ user, url, token }, request) => {
+      const { data, error } = await resend.emails.send({
+        from: "JustProImages <onboarding@resend.dev>",
+        to: [user.email],
+        subject: "Reset your password",
+        react: PasswordResetEmail({
+          userEmail: user.email,
+          resetUrl: url,
+          userName: user.name,
+        }),
+      });
+
+      if (error) {
+        console.log(
+          "Failed to send Password Reset email - " +
+            user.email +
+            " - " +
+            error.message
+        );
+      }
+    },
   },
   database: drizzleAdapter(db, {
     provider: "pg",
@@ -32,7 +53,10 @@ export const auth = betterAuth({
 
       if (error) {
         console.log(
-          "Failed to send verification email. Please reach out to support@justproimages.com"
+          "Failed to send verification email - " +
+            user.email +
+            " - " +
+            error.message
         );
       }
     },
