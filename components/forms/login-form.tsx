@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { signInUser } from "@/server/users";
+import { signInUser, resendVerificationEmail } from "@/server/users";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
@@ -36,6 +36,9 @@ export function LoginForm({
 }: React.ComponentProps<"form">) {
   const [isLoading, setIsLoading] = useState(false);
   const [isOAuthLoading, setIsOAuthLoading] = useState(false);
+  const [needsVerification, setNeedsVerification] = useState(false);
+  const [userEmail, setUserEmail] = useState("");
+  const [isResending, setIsResending] = useState(false);
   const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -49,14 +52,20 @@ export function LoginForm({
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       setIsLoading(true);
-      const { success, message } = await signInUser(
-        values.email,
-        values.password
-      );
+      setNeedsVerification(false);
+      const {
+        success,
+        message,
+        needsVerification: needsVerificationFlag,
+      } = await signInUser(values.email, values.password);
       if (success) {
         toast.success(message);
         router.push("/app");
       } else {
+        if (needsVerificationFlag) {
+          setNeedsVerification(true);
+          setUserEmail(values.email);
+        }
         toast.error(message);
       }
     } catch (error) {
@@ -65,6 +74,24 @@ export function LoginForm({
       setIsLoading(false);
     }
   }
+
+  const handleResendVerification = async () => {
+    try {
+      setIsResending(true);
+      const { success, message } = await resendVerificationEmail(userEmail);
+      if (success) {
+        toast.success(message);
+        setNeedsVerification(false);
+      } else {
+        toast.error(message);
+      }
+    } catch (error) {
+      console.error("Resend verification error:", error);
+      toast.error("Failed to resend verification email");
+    } finally {
+      setIsResending(false);
+    }
+  };
 
   const signIn = async () => {
     try {
@@ -139,6 +166,51 @@ export function LoginForm({
           <Button type="submit" className="w-full" disabled={isLoading}>
             {isLoading ? <Loader2 className="size-4 animate-spin" /> : "Login"}
           </Button>
+
+          {needsVerification && (
+            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+              <div className="flex items-start">
+                <div className="flex-shrink-0">
+                  <svg
+                    className="h-5 w-5 text-yellow-400"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </div>
+                <div className="ml-3 flex-1">
+                  <h3 className="text-sm font-medium text-yellow-800">
+                    Email Verification Required
+                  </h3>
+                  <div className="mt-2 text-sm text-yellow-700">
+                    <p>
+                      Please check your email and click the verification link to
+                      activate your account.
+                    </p>
+                    <p className="mt-2">
+                      Didn't receive the email?{" "}
+                      <button
+                        type="button"
+                        onClick={handleResendVerification}
+                        disabled={isResending}
+                        className="font-medium text-yellow-800 hover:text-yellow-900 underline"
+                      >
+                        {isResending
+                          ? "Sending..."
+                          : "Resend verification email"}
+                      </button>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
           <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
             <span className="bg-background text-muted-foreground relative z-10 px-2">
               Or continue with

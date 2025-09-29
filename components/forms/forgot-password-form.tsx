@@ -14,11 +14,11 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { forgetPassword } from "@/server/users";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import Link from "next/link";
-import { authClient } from "@/lib/auth-client";
 
 const formSchema = z.object({
   email: z.email("Invalid email address"),
@@ -40,18 +40,16 @@ export function ForgotPasswordForm({
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       setIsLoading(true);
-      const { error } = await authClient.forgetPassword({
-        email: values.email,
-        redirectTo: "/password-reset",
-      });
+      const { success, message } = await forgetPassword(values.email);
 
-      if (!error) {
-        toast.success("Password reset email sent");
+      if (success) {
+        toast.success(message);
       } else {
-        toast.error(error.message);
+        toast.error(message);
       }
     } catch (error) {
       console.log(error);
+      toast.error("An error occurred while sending the reset email");
     } finally {
       setIsLoading(false);
     }

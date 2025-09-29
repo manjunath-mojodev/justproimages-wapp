@@ -19,14 +19,22 @@ export const auth = betterAuth({
   },
   emailAndPassword: {
     enabled: true,
+    requireEmailVerification: true,
     sendResetPassword: async ({ user, url, token }, request) => {
+      // Construct the password reset URL to point to our password reset page with token
+      const baseUrl =
+        process.env.NEXT_PUBLIC_BETTER_AUTH_URL ||
+        process.env.NEXTAUTH_URL ||
+        "http://localhost:3000";
+      const resetUrl = `${baseUrl}/password-reset?token=${token}`;
+
       const { data, error } = await resend.emails.send({
         from: "JustProImages <onboarding@resend.dev>",
         to: [user.email],
         subject: "Reset your password",
         react: PasswordResetEmail({
           userEmail: user.email,
-          resetUrl: url,
+          resetUrl: resetUrl,
           userName: user.name,
         }),
       });
@@ -47,13 +55,20 @@ export const auth = betterAuth({
   }),
   emailVerification: {
     sendVerificationEmail: async ({ user, url, token }, request) => {
+      // Construct the verification URL to point to our verification page
+      const baseUrl =
+        process.env.NEXT_PUBLIC_BETTER_AUTH_URL ||
+        process.env.NEXTAUTH_URL ||
+        "http://localhost:3000";
+      const verificationUrl = `${baseUrl}/verify-email?token=${token}`;
+
       const { data, error } = await resend.emails.send({
         from: "JustProImages <onboarding@resend.dev>",
         to: [user.email],
         subject: "Verify your email address",
         react: VerificationEmail({
           userEmail: user.email,
-          verificationUrl: url,
+          verificationUrl: verificationUrl,
         }),
       });
 
