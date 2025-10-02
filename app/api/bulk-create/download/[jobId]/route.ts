@@ -5,10 +5,10 @@ const API_SERVER_URL = process.env.API_SERVER_URL || "http://localhost:8000";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { jobId: string } }
+  { params }: { params: Promise<{ jobId: string }> }
 ) {
   try {
-    const { jobId } = params;
+    const { jobId } = await params;
 
     if (!jobId) {
       return NextResponse.json(
