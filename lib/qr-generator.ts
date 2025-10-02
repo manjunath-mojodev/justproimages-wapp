@@ -1,7 +1,6 @@
 import QRCode from "qrcode";
-import {
+import type {
   QRCodeConfig,
-  QRCodeType,
   WiFiConfig,
   VCardConfig,
   SMSConfig,

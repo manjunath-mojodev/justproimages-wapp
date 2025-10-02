@@ -68,8 +68,8 @@ const VerificationEmail = ({
             {/* Alternative Link */}
             <Section className="mb-[32px]">
               <Text className="text-[14px] text-gray-600 mb-[8px] m-0">
-                If the button above doesn't work, copy and paste this link into
-                your browser:
+                If the button above doesn&apos;t work, copy and paste this link
+                into your browser:
               </Text>
               <Link
                 href={verificationUrl}
@@ -85,9 +85,9 @@ const VerificationEmail = ({
                 <strong>Security Notice:</strong>
               </Text>
               <Text className="text-[14px] text-gray-600 m-0">
-                This verification link will expire in 24 hours. If you didn't
-                create an account with JustProImages.com, please ignore this
-                email or contact our support team.
+                This verification link will expire in 24 hours. If you
+                didn&apos;t create an account with JustProImages.com, please
+                ignore this email or contact our support team.
               </Text>
             </Section>
 

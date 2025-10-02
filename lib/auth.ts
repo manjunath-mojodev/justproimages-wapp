@@ -20,7 +20,7 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
     requireEmailVerification: true,
-    sendResetPassword: async ({ user, url, token }, request) => {
+    sendResetPassword: async ({ user, token }) => {
       // Construct the password reset URL to point to our password reset page with token
       const baseUrl =
         process.env.NEXT_PUBLIC_BETTER_AUTH_URL ||
@@ -28,7 +28,7 @@ export const auth = betterAuth({
         "http://localhost:3000";
       const resetUrl = `${baseUrl}/password-reset?token=${token}`;
 
-      const { data, error } = await resend.emails.send({
+      const { error } = await resend.emails.send({
         from: "JustProImages <onboarding@resend.dev>",
         to: [user.email],
         subject: "Reset your password",
@@ -54,7 +54,7 @@ export const auth = betterAuth({
     schema,
   }),
   emailVerification: {
-    sendVerificationEmail: async ({ user, url, token }, request) => {
+    sendVerificationEmail: async ({ user, token }) => {
       // Construct the verification URL to point to our verification page
       const baseUrl =
         process.env.NEXT_PUBLIC_BETTER_AUTH_URL ||
@@ -62,7 +62,7 @@ export const auth = betterAuth({
         "http://localhost:3000";
       const verificationUrl = `${baseUrl}/verify-email?token=${token}`;
 
-      const { data, error } = await resend.emails.send({
+      const { error } = await resend.emails.send({
         from: "JustProImages <onboarding@resend.dev>",
         to: [user.email],
         subject: "Verify your email address",

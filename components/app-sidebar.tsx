@@ -1,194 +1,88 @@
-"use client";
-
 import * as React from "react";
-import {
-  IconCamera,
-  IconChartBar,
-  IconDashboard,
-  IconDatabase,
-  IconFileAi,
-  IconFileDescription,
-  IconFileWord,
-  IconFolder,
-  IconHelp,
-  IconInnerShadowTop,
-  IconListDetails,
-  IconReport,
-  IconSearch,
-  IconSettings,
-  IconUsers,
-  IconStack,
-} from "@tabler/icons-react";
+import { ChevronRight } from "lucide-react";
 
-import { NavDocuments } from "@/components/nav-documents";
-import { NavMain } from "@/components/nav-main";
-import { NavSecondary } from "@/components/nav-secondary";
-import { NavUser } from "@/components/nav-user";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarRail,
 } from "@/components/ui/sidebar";
 
+// This is sample data.
 const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
+  versions: ["1.0.1", "1.1.0-alpha", "2.0.0-beta1"],
   navMain: [
     {
-      title: "Dashboard",
-      url: "/app",
-      icon: IconDashboard,
-    },
-    {
-      title: "QR Code Generator",
-      url: "/free-tools/qr-code-generator",
-      icon: IconListDetails,
-    },
-    {
-      title: "Bulk Create",
-      url: "/app/bulk-create",
-      icon: IconStack,
-    },
-    {
-      title: "Analytics",
-      url: "#",
-      icon: IconChartBar,
-    },
-    {
-      title: "Projects",
-      url: "#",
-      icon: IconFolder,
-    },
-    {
-      title: "Team",
-      url: "#",
-      icon: IconUsers,
-    },
-  ],
-  navClouds: [
-    {
-      title: "Capture",
-      icon: IconCamera,
-      isActive: true,
+      title: "QR Codes",
       url: "#",
       items: [
         {
-          title: "Active Proposals",
-          url: "#",
-        },
-        {
-          title: "Drafts",
-          url: "#",
-        },
-        {
-          title: "Templates",
-          url: "#",
+          title: "Generate QR Codes",
+          url: "/app/qr-codes",
         },
       ],
-    },
-    {
-      title: "Content",
-      icon: IconFileDescription,
-      url: "#",
-      items: [
-        {
-          title: "Library",
-          url: "#",
-        },
-        {
-          title: "Media",
-          url: "#",
-        },
-        {
-          title: "Documents",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "AI Assistant",
-      icon: IconFileAi,
-      url: "#",
-      items: [
-        {
-          title: "Chat",
-          url: "#",
-        },
-        {
-          title: "Generate",
-          url: "#",
-        },
-        {
-          title: "Analyze",
-          url: "#",
-        },
-      ],
-    },
-  ],
-  documents: [
-    {
-      name: "Project Alpha",
-      url: "#",
-      icon: IconFileWord,
-    },
-    {
-      name: "Project Beta",
-      url: "#",
-      icon: IconFileDescription,
-    },
-    {
-      name: "Project Gamma",
-      url: "#",
-      icon: IconFileWord,
-    },
-  ],
-  navSecondary: [
-    {
-      title: "Help & Support",
-      url: "#",
-      icon: IconHelp,
-    },
-    {
-      title: "Settings",
-      url: "#",
-      icon: IconSettings,
     },
   ],
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar collapsible="offcanvas" {...props}>
+    <Sidebar {...props}>
       <SidebarHeader>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton
-              asChild
-              className="data-[slot=sidebar-menu-button]:!p-1.5"
-            >
-              <a href="#">
-                <IconInnerShadowTop className="!size-5" />
-                <span className="text-base font-semibold">JustProImages</span>
-              </a>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
+        <span className="text-2xl font-bold">JustProImages</span>
+        {/* <VersionSwitcher
+          versions={data.versions}
+          defaultVersion={data.versions[0]}
+        /> */}
       </SidebarHeader>
-      <SidebarContent>
-        <NavMain items={data.navMain} />
-        <NavDocuments items={data.documents} />
-        <NavSecondary items={data.navSecondary} className="mt-auto" />
+      <SidebarContent className="gap-0">
+        {/* We create a collapsible SidebarGroup for each parent. */}
+        {data.navMain.map((item) => (
+          <Collapsible
+            key={item.title}
+            title={item.title}
+            defaultOpen
+            className="group/collapsible"
+          >
+            <SidebarGroup>
+              <SidebarGroupLabel
+                asChild
+                className="group/label text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground text-sm"
+              >
+                <CollapsibleTrigger>
+                  {item.title}{" "}
+                  <ChevronRight className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-90" />
+                </CollapsibleTrigger>
+              </SidebarGroupLabel>
+              <CollapsibleContent>
+                <SidebarGroupContent>
+                  <SidebarMenu>
+                    {item.items.map((item) => (
+                      <SidebarMenuItem key={item.title}>
+                        <SidebarMenuButton asChild isActive={item.isActive}>
+                          <a href={item.url}>{item.title}</a>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    ))}
+                  </SidebarMenu>
+                </SidebarGroupContent>
+              </CollapsibleContent>
+            </SidebarGroup>
+          </Collapsible>
+        ))}
       </SidebarContent>
-      <SidebarFooter>
-        <NavUser user={data.user} />
-      </SidebarFooter>
+      <SidebarRail />
     </Sidebar>
   );
 }

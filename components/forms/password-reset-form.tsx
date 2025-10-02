@@ -30,10 +30,7 @@ const formSchema = z.object({
   }),
 });
 
-export function PasswordResetForm({
-  className,
-  ...props
-}: React.ComponentProps<"form">) {
+export function PasswordResetForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [tokenError, setTokenError] = useState<string | null>(null);
   const [isTokenValid, setIsTokenValid] = useState(true);

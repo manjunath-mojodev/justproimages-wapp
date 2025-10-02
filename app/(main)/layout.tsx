@@ -1,32 +1,26 @@
-import { AppSidebar } from "@/components/app-sidebar";
-import { SiteHeader } from "@/components/site-header";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import { SimpleHeader } from "@/components/simple-header";
+import { SettingsProvider } from "../../contexts/settings-context";
+import { UserProvider } from "../../contexts/user-context";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { TopNav } from "@/components/top-nav";
+import { Sidebar } from "@/components/sidebar";
 
-export default function LoggedInLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
-    <>
-      <SimpleHeader />
-      <div className="pt-20">
-        <SidebarProvider
-          style={
-            {
-              "--sidebar-width": "calc(var(--spacing) * 72)",
-              "--header-height": "calc(var(--spacing) * 12)",
-            } as React.CSSProperties
-          }
-        >
-          <AppSidebar variant="inset" />
-          <SidebarInset>
-            <SiteHeader />
-            {children}
-          </SidebarInset>
-        </SidebarProvider>
-      </div>
-    </>
+    <UserProvider>
+      <SettingsProvider>
+        <TooltipProvider delayDuration={0}>
+          <SidebarProvider>
+            <Sidebar />
+            <SidebarInset>
+              <TopNav />
+              <div className="mx-auto">
+                <main className="w-full">{children}</main>
+              </div>
+            </SidebarInset>
+          </SidebarProvider>
+        </TooltipProvider>
+      </SettingsProvider>
+    </UserProvider>
   );
 }

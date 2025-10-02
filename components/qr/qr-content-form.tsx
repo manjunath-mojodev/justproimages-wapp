@@ -17,14 +17,6 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { useQRCodeStore } from "@/store/qr-store";
-import {
-  QRCodeType,
-  WiFiConfig,
-  VCardConfig,
-  SMSConfig,
-  EmailConfig,
-  CalendarConfig,
-} from "@/types/qr";
 
 const wifiSchema = z.object({
   ssid: z.string().min(1, "SSID is required"),
@@ -116,7 +108,7 @@ export function QRContentForm() {
     } catch {
       setFormData({});
     }
-  }, [config.type]);
+  }, [config.type, config.content]);
 
   // Update form default values when formData changes
   useEffect(() => {

@@ -21,7 +21,7 @@ import {
   Clock,
   AlertTriangle,
 } from "lucide-react";
-import { Toaster, toast } from "sonner";
+import { toast } from "sonner";
 
 interface BatchJobStatus {
   job_id: string;
@@ -48,6 +48,37 @@ const BulkCreatePage = () => {
   const [jobStatus, setJobStatus] = useState<BatchJobStatus | null>(null);
   const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  const pollJobStatus = useCallback(async (jobId: string) => {
+    const pollInterval = setInterval(async () => {
+      try {
+        const response = await fetch(`/api/bulk-create/status/${jobId}`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const status: BatchJobStatus = await response.json();
+        setJobStatus(status);
+
+        if (status.status === "completed") {
+          clearInterval(pollInterval);
+          if (status.zip_file_ready) {
+            setDownloadUrl(`/api/bulk-create/download/${jobId}`);
+            toast.success(
+              "Batch job completed! Your QR codes are ready for download."
+            );
+          }
+        } else if (status.status === "failed") {
+          clearInterval(pollInterval);
+          toast.error("Batch job failed. Please try again.");
+        }
+      } catch (err) {
+        console.error("Error polling job status:", err);
+        clearInterval(pollInterval);
+        toast.error("Error checking job status");
+      }
+    }, 2000); // Poll every 2 seconds
+  }, []);
 
   const handleSubmit = useCallback(async () => {
     if (!urls.trim()) {
@@ -108,38 +139,7 @@ const BulkCreatePage = () => {
     } finally {
       setIsProcessing(false);
     }
-  }, [urls]);
-
-  const pollJobStatus = useCallback(async (jobId: string) => {
-    const pollInterval = setInterval(async () => {
-      try {
-        const response = await fetch(`/api/bulk-create/status/${jobId}`);
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const status: BatchJobStatus = await response.json();
-        setJobStatus(status);
-
-        if (status.status === "completed") {
-          clearInterval(pollInterval);
-          if (status.zip_file_ready) {
-            setDownloadUrl(`/api/bulk-create/download/${jobId}`);
-            toast.success(
-              "Batch job completed! Your QR codes are ready for download."
-            );
-          }
-        } else if (status.status === "failed") {
-          clearInterval(pollInterval);
-          toast.error("Batch job failed. Please try again.");
-        }
-      } catch (err) {
-        console.error("Error polling job status:", err);
-        clearInterval(pollInterval);
-        toast.error("Error checking job status");
-      }
-    }, 2000); // Poll every 2 seconds
-  }, []);
+  }, [urls, pollJobStatus]);
 
   const handleDownload = useCallback(() => {
     if (downloadUrl) {
@@ -177,7 +177,7 @@ const BulkCreatePage = () => {
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">Bulk QR Code Generator</h1>
+          <h1 className="text-3xl font-bold mb-2">QR Code Generator</h1>
           <p className="text-muted-foreground">
             Generate multiple QR codes at once by providing a list of URLs. Each
             URL will be converted into a QR code and packaged into a
@@ -202,8 +202,8 @@ const BulkCreatePage = () => {
                 placeholder="https://example.com&#10;https://another-site.com&#10;https://third-website.com"
                 value={urls}
                 onChange={(e) => setUrls(e.target.value)}
-                rows={8}
-                className="mb-4"
+                rows={12}
+                className="mb-4 min-h-[300px] resize-y"
               />
               <Button
                 onClick={handleSubmit}
@@ -306,7 +306,6 @@ const BulkCreatePage = () => {
           )}
         </div>
       </div>
-      <Toaster />
     </div>
   );
 };

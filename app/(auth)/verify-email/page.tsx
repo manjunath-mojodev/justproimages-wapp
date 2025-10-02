@@ -1,19 +1,18 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { verifyEmail } from "@/server/users";
 import { toast } from "sonner";
 import { Loader2, CheckCircle, XCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function VerifyEmailPage() {
   const [isVerifying, setIsVerifying] = useState(true);
-  const [isVerified, setIsVerified] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const searchParams = useSearchParams();
-  const router = useRouter();
 
   useEffect(() => {
     const verifyEmailToken = async () => {
@@ -29,7 +28,6 @@ export default function VerifyEmailPage() {
         const { success, message } = await verifyEmail(token);
 
         if (success) {
-          setIsVerified(true);
           toast.success(message);
         } else {
           setError(message);
@@ -64,10 +62,12 @@ export default function VerifyEmailPage() {
           </div>
         </div>
         <div className="bg-muted relative hidden lg:block">
-          <img
+          <Image
             src="/placeholder.svg"
             alt="Image"
             className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+            width={1000}
+            height={1000}
           />
         </div>
       </div>
@@ -95,10 +95,12 @@ export default function VerifyEmailPage() {
           </div>
         </div>
         <div className="bg-muted relative hidden lg:block">
-          <img
+          <Image
             src="/placeholder.svg"
             alt="Image"
             className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+            width={1000}
+            height={1000}
           />
         </div>
       </div>
@@ -128,10 +130,12 @@ export default function VerifyEmailPage() {
         </div>
       </div>
       <div className="bg-muted relative hidden lg:block">
-        <img
+        <Image
           src="/placeholder.svg"
           alt="Image"
           className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+          width={1000}
+          height={1000}
         />
       </div>
     </div>

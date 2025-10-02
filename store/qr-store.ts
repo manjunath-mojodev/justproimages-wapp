@@ -34,7 +34,7 @@ const defaultConfig: QRCodeConfig = {
 
 export const useQRCodeStore = create<QRCodeStore>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       config: defaultConfig,
       qrCodeDataUrl: null,
       qrCodeSvg: null,

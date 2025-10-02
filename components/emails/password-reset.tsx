@@ -53,7 +53,8 @@ const PasswordResetEmail = ({
               </Text>
               <Text className="text-[16px] text-gray-700 mb-[24px] m-0">
                 If this was you, click the button below to reset your password.
-                If you didn't request this, you can safely ignore this email.
+                If you didn&apos;t request this, you can safely ignore this
+                email.
               </Text>
             </Section>
 
@@ -70,8 +71,8 @@ const PasswordResetEmail = ({
             {/* Alternative Link */}
             <Section className="mb-[32px]">
               <Text className="text-[14px] text-gray-600 mb-[8px] m-0">
-                If the button above doesn't work, copy and paste this link into
-                your browser:
+                If the button above doesn&apos;t work, copy and paste this link
+                into your browser:
               </Text>
               <Link
                 href={resetUrl}
@@ -91,8 +92,8 @@ const PasswordResetEmail = ({
                 reasons
               </Text>
               <Text className="text-[14px] text-red-700 mb-[8px] m-0">
-                • If you didn't request this reset, please contact our support
-                team immediately
+                • If you didn&apos;t request this reset, please contact our
+                support team immediately
               </Text>
               <Text className="text-[14px] text-red-700 m-0">
                 • Never share this link with anyone else
@@ -105,8 +106,9 @@ const PasswordResetEmail = ({
                 <strong>Need Help?</strong>
               </Text>
               <Text className="text-[14px] text-gray-600 mb-[8px] m-0">
-                If you're having trouble resetting your password or didn't
-                request this change, please contact our support team.
+                If you&apos;re having trouble resetting your password or
+                didn&apos;t request this change, please contact our support
+                team.
               </Text>
               <Text className="text-[14px] text-gray-600 m-0">
                 <Link href="#" className="text-blue-600 no-underline">

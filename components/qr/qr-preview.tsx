@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useCallback } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Download, RefreshCw, Copy } from "lucide-react";
@@ -20,7 +20,7 @@ export function QRPreview() {
   } = useQRCodeStore();
   const qrRef = useRef<HTMLDivElement>(null);
 
-  const generateQRCode = async () => {
+  const generateQRCode = useCallback(async () => {
     if (!config.content.trim()) {
       setError("Please enter content for the QR code");
       return;
@@ -43,7 +43,7 @@ export function QRPreview() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [config, setError, setLoading, setQRCodeData]);
 
   const handleExportPNG = async () => {
     if (!qrCodeDataUrl) return;
@@ -54,7 +54,7 @@ export function QRPreview() {
         `qr-code-${Date.now()}.png`
       );
       toast.success("QR code exported as PNG");
-    } catch (error) {
+    } catch {
       toast.error("Failed to export PNG");
     }
   };
@@ -63,7 +63,7 @@ export function QRPreview() {
     try {
       await QRCodeExporter.exportAsSVG(config, `qr-code-${Date.now()}.svg`);
       toast.success("QR code exported as SVG");
-    } catch (error) {
+    } catch {
       toast.error("Failed to export SVG");
     }
   };
@@ -77,7 +77,7 @@ export function QRPreview() {
         `qr-code-${Date.now()}.pdf`
       );
       toast.success("QR code exported as PDF");
-    } catch (error) {
+    } catch {
       toast.error("Failed to export PDF");
     }
   };
@@ -92,7 +92,7 @@ export function QRPreview() {
         new ClipboardItem({ "image/png": blob }),
       ]);
       toast.success("QR code copied to clipboard");
-    } catch (error) {
+    } catch {
       toast.error("Failed to copy to clipboard");
     }
   };
@@ -106,7 +106,7 @@ export function QRPreview() {
     }, 500);
 
     return () => clearTimeout(timeoutId);
-  }, [config]);
+  }, [config, generateQRCode]);
 
   return (
     <Card className="w-full">
@@ -143,6 +143,7 @@ export function QRPreview() {
                   </p>
                 </div>
               ) : qrCodeDataUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
                 <img
                   src={qrCodeDataUrl}
                   alt="Generated QR Code"

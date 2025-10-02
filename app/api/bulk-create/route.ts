@@ -10,7 +10,7 @@ interface BatchQRRequest {
     content: string;
     qr_type: string;
     filename?: string;
-    type_data?: any;
+    type_data?: Record<string, unknown>;
   }>;
   size: number;
   color: string;

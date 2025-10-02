@@ -6,7 +6,6 @@ import { QRPreview } from "@/components/qr/qr-preview";
 import { QRTypeSelector } from "@/components/qr/qr-type-selector";
 import { useHydrateStore } from "@/store/qr-store";
 import React from "react";
-import { Toaster } from "sonner";
 
 const QrCodePage = () => {
   useHydrateStore();
@@ -27,8 +26,6 @@ const QrCodePage = () => {
           </div>
         </div>
       </main>
-
-      <Toaster position="top-right" expand={true} richColors={true} />
     </div>
   );
 };

@@ -20,11 +20,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from "./ui/dropdown-menu";
-import {
-  freeTools,
-  getActiveTools,
-  getComingSoonTools,
-} from "@/config/free-tools";
+import { getActiveTools, getComingSoonTools } from "@/config/free-tools";
 
 const iconMap = {
   QrCode,

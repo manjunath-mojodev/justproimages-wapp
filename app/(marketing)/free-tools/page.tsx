@@ -4,11 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, QrCode, Layers, Image, Palette, Type } from "lucide-react";
-import {
-  freeTools,
-  getActiveTools,
-  getComingSoonTools,
-} from "@/config/free-tools";
+import { getActiveTools, getComingSoonTools } from "@/config/free-tools";
 
 const iconMap = {
   QrCode,

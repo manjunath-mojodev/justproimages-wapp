@@ -1,4 +1,5 @@
 import { ForgotPasswordForm } from "@/components/forms/forgot-password-form";
+import Image from "next/image";
 
 export default function ForgotPasswordPage() {
   return (
@@ -11,10 +12,12 @@ export default function ForgotPasswordPage() {
         </div>
       </div>
       <div className="bg-muted relative hidden lg:block">
-        <img
+        <Image
           src="/placeholder.svg"
           alt="Image"
           className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+          width={1000}
+          height={1000}
         />
       </div>
     </div>

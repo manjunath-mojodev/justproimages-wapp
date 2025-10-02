@@ -18,7 +18,9 @@ export default function HeroSection() {
                   without drowning in design tasks.
                 </p>
 
-                <div className="mt-12 text-2xl font-medium">Coming Soon</div>
+                <div className="mt-12 text-2xl font-medium">
+                  More !!! coming soon ...
+                </div>
 
                 {/* <div className="mt-12 flex flex-col items-center justify-center gap-2 sm:flex-row lg:justify-start">
                   <Button asChild size="lg" className="px-5 text-base">

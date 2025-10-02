@@ -24,10 +24,7 @@ const formSchema = z.object({
   email: z.email("Invalid email address"),
 });
 
-export function ForgotPasswordForm({
-  className,
-  ...props
-}: React.ComponentProps<"form">) {
+export function ForgotPasswordForm() {
   const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
