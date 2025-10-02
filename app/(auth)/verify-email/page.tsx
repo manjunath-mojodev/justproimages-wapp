@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { verifyEmail } from "@/server/users";
 import { toast } from "sonner";
@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
 
-export default function VerifyEmailPage() {
+function VerifyEmailContent() {
   const [isVerifying, setIsVerifying] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const searchParams = useSearchParams();
@@ -139,5 +139,35 @@ export default function VerifyEmailPage() {
         />
       </div>
     </div>
+  );
+}
+
+export default function VerifyEmailPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="grid min-h-svh lg:grid-cols-2">
+          <div className="flex flex-col gap-4 p-6 md:p-10">
+            <div className="flex flex-1 items-center justify-center">
+              <div className="w-full max-w-xs text-center">
+                <Loader2 className="size-8 animate-spin mx-auto mb-4" />
+                <h1 className="text-2xl font-bold mb-2">Loading...</h1>
+              </div>
+            </div>
+          </div>
+          <div className="bg-muted relative hidden lg:block">
+            <Image
+              src="/placeholder.svg"
+              alt="Image"
+              className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+              width={1000}
+              height={1000}
+            />
+          </div>
+        </div>
+      }
+    >
+      <VerifyEmailContent />
+    </Suspense>
   );
 }
